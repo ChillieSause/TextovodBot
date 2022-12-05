@@ -7,10 +7,11 @@ from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import time
+from config import TOKEN_BOT, USER_ID, API_KEY
 
 sleep = 0
 print('----+= БОТ ЗАПУЩЕН =+----')
-BOT_TOKEN = '5703210320:AAHJvckxYDrlfc2ti2_BNYoX3jVayu9kpfQ'
+BOT_TOKEN = TOKEN_BOT
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 button_hi = KeyboardButton('/check')
@@ -50,12 +51,12 @@ async def processMessgae(message: types.Message,  state: FSMContext):
                 sleep = 10
             else:
                 sleep = 5
-            r = requests.post('https://textovod.com/api/punctuation/user/add', json={"user_id": "195836", "api_key": "935a90b1276e1eaeca4e921ecc31dcf0", "text": user_message})
+            r = requests.post('https://textovod.com/api/punctuation/user/add', json={f"user_id": {USER_ID}, "api_key": {API_KEY}, "text": user_message})
             time.sleep(sleep)
             data = json.loads(r.text)
             text_id = data['text_id']
             r2 = requests.post('https://textovod.com/api/punctuation/user/status',
-                               json={"user_id": "195836", "api_key": "935a90b1276e1eaeca4e921ecc31dcf0",
+                               json={f"user_id": {USER_ID}, "api_key": {API_KEY},
                                      "text_id": text_id})
             time.sleep(sleep)
             data2 = json.loads(r2.text)
